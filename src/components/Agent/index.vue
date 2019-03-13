@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { resourceJudge } from '@/utils/tools'
 export default {
   name: 'Agent',
   props: {
@@ -88,14 +89,9 @@ export default {
   methods: {
     _addResource() {
       // 校验输入是否合法(demo仅考虑是否为空字符串)
-      if(this.userInputResourceTag === '') {
-        this.$notify({
-          title: 'Warning',
-          message: 'New resource tag cannot be an empty string',
-          type: 'warning'
-        })
-        return
-      }
+      // 判断是否新增tag已存在
+      const {canBeAdded, message} = resourceJudge(this.userInputResourceTag, this.agent.resources)
+      if(!canBeAdded) return
       // 解析输入字符串
       const tagArr = this.userInputResourceTag.split(',')
       const newResourceArr = [...this.agent.resources, ...tagArr]

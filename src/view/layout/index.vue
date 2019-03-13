@@ -37,6 +37,7 @@
             :itemName="'Building'"
             :totalAmount="buildingCount"
             :backIcon="'icon-cog'"
+            :isOpenAnimation="true"
             :backColor="'rgb(255,185,0)'"/>
           <statistics-item 
             :itemName="'Idle'"
@@ -244,7 +245,7 @@ export default {
         const { data, status } = await api.getResource()
         if(status === 200) this.agents = [...data]
       } catch (error) {
-        console.log(err)
+        console.log(error)
       }
     },
     // 筛选关键字

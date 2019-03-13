@@ -1,6 +1,6 @@
 <template>
   <div class="StatisticsItem" :style="{backgroundColor: backColor}">
-    <i :class="[`${backIcon}`, 'item-icon']"></i>
+    <i :class="[`${backIcon}`, isOpenAnimation ? 'item-icon-rotate' : 'item-icon']"></i>
     <span class="itemName">{{itemName}}</span>
     <span class="totalAmount">
       <count-to :start-val="0" :end-val="totalAmount" :duration="400"></count-to>
@@ -36,6 +36,11 @@ export default {
       type: String,
       default: ''
     },
+    // open animation
+    isOpenAnimation: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -69,4 +74,15 @@ export default {
     .item-icon
       font-size 144px
       opacity 0.2
+    .item-icon-rotate
+      font-size 144px
+      opacity 0.2
+      animation iconRotate infinite linear 2s
+  @keyframes iconRotate 
+    from 
+      transform rotate(0deg) 
+    to 
+      transform rotate(360deg) 
+    
+  
 </style>
