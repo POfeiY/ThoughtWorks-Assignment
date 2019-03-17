@@ -29,6 +29,7 @@ export default {
     // 改变视图布局
     _chooseView(value) {
       this.activeViewLayout = value
+      this.$emit('view-change', value)
     }
   }
 }

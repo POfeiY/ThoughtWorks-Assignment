@@ -76,10 +76,10 @@
           </div>
           <div class="search-view">
             <search-wrap @filter-change="_filterChange"/> 
-            <view-layout/>
+            <view-layout @view-change="_viewChange"/>
           </div>
         </div>
-        <div class="dataListWrap">
+        <div :class="[activeViewLayout === 'list' ? 'dataListWrap' : 'dataListWrap-card']">
           <GeminiScrollbar 
             ref="scrollbar"  
             class="tw-scroll-bar" 
@@ -88,12 +88,19 @@
             :forceGemini="false">
             <p class="no-data" v-if="renderAgents.length === 0">The data you are searching for has not been retrieved yet...</p>
             <template v-else>
-              <Agent 
+              <!-- <Agent 
                 v-for="item in renderAgents" 
                 @delete-resource="_modifyResource"
                 @add-resource="_modifyResource"
                 :agent="item" 
-                :key="item.id"/>
+                :key="item.id"/> -->
+              <component 
+                :is="viewModeItem[activeViewLayout]" 
+                v-for="item in renderAgents" 
+                @delete-resource="_modifyResource"
+                @add-resource="_modifyResource"
+                :agent="item" 
+                :key="item.id"></component>  
             </template>
           </GeminiScrollbar>
         </div>
@@ -112,6 +119,7 @@ import SearchWrap from '@/components/SearchWrap'
 import StatisticsItem from '@/components/StatisticsItem'
 import ViewLayout from '@/components/ViewLayout'
 import Agent from '@/components/Agent'
+import WaterfallAgent from '@/components/WaterfallAgent'
 import CountTo from 'vue-count-to'
 import api from '@/api'
 export default {
@@ -123,7 +131,8 @@ export default {
     SearchWrap,
     ViewLayout,
     Agent,
-    CountTo
+    CountTo,
+    WaterfallAgent
   },
   created(){
     this._getResource()
@@ -206,13 +215,22 @@ export default {
           value: "virtual",
         },
       ],
+      viewModeItem: {
+        card: 'WaterfallAgent',
+        list: 'Agent'
+      },
       activeFilter: 'all',
       agents: [],
       activeRouter:'AGENT',
-      filterString: ''
+      filterString: '',
+      activeViewLayout: 'list'
     }
   },
   methods: {
+    // 视图模式切换
+    _viewChange(value) {
+      this.activeViewLayout = value
+    },
     // 自定义滚动条回调
     _readyScrollbar(scroll) { },
     // 路由切换（模拟）
@@ -257,6 +275,17 @@ export default {
 </script>
 <style lang="stylus">
   @import '~common/scrollbar.styl'
+  .dataListWrap-card
+    margin-top 18px
+    max-height calc(100vh - 326px)
+    overflow-y auto
+    .gm-scroll-view
+      .WaterfallAgent:not(:nth-child(3n))
+        margin-right 5px
+    .no-data 
+      font-size 16px
+      text-align center 
+      color $default-color
 </style>
 <style lang="stylus" scoped>
   @import '~common/common.styl'

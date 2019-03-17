@@ -127,6 +127,7 @@ export default {
     border-color $hover-color
     .popper__arrow
       border-bottom-color $hover-color !important
+      border-top-color $hover-color !important
     .popover-wrap
       .popover-inner-input
         .el-input__inner
@@ -206,7 +207,6 @@ export default {
             box-sizing border-box
             margin-right 10px
             padding 0 8px
-            margin-right 10px
             width 60px
             height 26px
             background-color rgb(239,239,239)
@@ -218,7 +218,6 @@ export default {
             box-sizing border-box
             margin-right 10px
             padding 0 8px
-            margin-right 10px
             width 88px
             height 26px
             background-color rgb(239,239,239)
