@@ -6,21 +6,20 @@ export function resourceJudge(tag, tagsArr) {
     repeat: 'The new label already exists. Please replace the label name',
     success: ''
   }
-  if(tag === '') {
+  const norepeattagsArr = []
+  const tagArr = tag.split(",")
+  if(tagArr.length === 0) {
     Notification({
       title: 'Warning',
       message: messageWrap.empty,
       type: 'warning'
     })
-    return { canBeAdded: false}
+  } else {
+    for (let item of tagArr) {
+      !tagsArr.includes(item)
+      ? norepeattagsArr.push(item)
+      : Notification({ title: 'Warning', message: `The new label ${item} already exists. Please replace the label name`, type: 'warning'})
+    }
   }
-  if(tagsArr.includes(tag)) {
-    Notification({
-      title: 'Warning',
-      message: messageWrap.repeat,
-      type: 'warning'
-    })
-    return { canBeAdded: false}
-  }
-  return { canBeAdded: true, message: messageWrap.success }
+  return { norepeattagsArr }
 }

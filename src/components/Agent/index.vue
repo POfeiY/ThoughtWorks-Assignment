@@ -89,12 +89,10 @@ export default {
   methods: {
     _addResource() {
       // 校验输入是否合法(demo仅考虑是否为空字符串)
-      // 判断是否新增tag已存在
-      const {canBeAdded, message} = resourceJudge(this.userInputResourceTag, this.agent.resources)
-      if(!canBeAdded) return
-      // 解析输入字符串
-      const tagArr = this.userInputResourceTag.split(',')
-      const newResourceArr = [...this.agent.resources, ...tagArr]
+      // 判断新增tag是否已存在
+      const {norepeattagsArr} = resourceJudge(this.userInputResourceTag, this.agent.resources)
+      if(norepeattagsArr.length === 0) return 
+      const newResourceArr = [...this.agent.resources, ...norepeattagsArr]
       const postResource = {...this.agent, ...{resources: newResourceArr} }
       this.$emit('add-resource', postResource)
       this._closePopover()
